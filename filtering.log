@@ -1,0 +1,29 @@
+Data cleaning and standardization log
+=====================================
+
+Rules implemented:
+1. Standardized concentration units to nM where units were in {M, mM, uM/um, nM, pM, fM}.
+2. Converted IC50/Ki rows to pIC50/pKi using -log10(M) when concentration values were available.
+3. Preserved inequality relations and labeled censoring; p-scale relations are inverted from concentration scale.
+4. Treated percent inhibition endpoints as a separate assay class and did not compute pseudo-IC50 without curve data.
+5. Removed rows with missing/invalid SMILES from the cleaned output, while retaining flags for auditability.
+6. Resolved duplicates per compound-assay by prioritized selection (IC50/Ki, human assay, uncensored, numeric concentration) and median aggregation for numeric values.
+
+Counts:
+- N raw rows: 2861
+- Core rows (assay + molecule + measure present): 2861
+- Removed for missing SMILES: 1
+- Removed for invalid SMILES: 0
+- Rows after structure filter: 2860
+- Converted to nM: 2149
+- Converted to pIC50/pKi: 1687
+- Percent inhibition rows flagged: 439
+- Censored rows preserved: 650
+- Rows after duplicate resolution: 2661
+- Duplicate rows collapsed: 199
+- SMILES validation method: regex_fallback_no_rdkit
+
+Outputs:
+- data/herg_postprocessed.csv
+- data/herg_percent_inhibition.csv
+- filtering.log
